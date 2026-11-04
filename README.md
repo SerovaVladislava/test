@@ -27,7 +27,7 @@ LLM на выбор, все со строгой JSON-схемой ответа �
 Нужен Python 3.10+ и один из провайдеров из таблицы выше.
 
 ```bash
-git clone <URL репозитория> && cd <папка репозитория>
+git clone https://github.com/SerovaVladislava/test.git && cd test
 python -m venv .venv
 ```
 
