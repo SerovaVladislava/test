@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}{{ result.card.seo_title }} — черновик{% endblock %}
+{% block content %}
+{% set card = result.card %}
+<p><a href="/">← Новый товар</a></p>
+<h1>{{ result.product.name }}</h1>
+
+<section class="status-{{ result.status }}">
+  {% if result.status == "ok" %}
+    <strong>Автопроверки пройдены</strong> — черновик готов к вычитке.
+  {% else %}
+    <strong>Требует внимания:</strong>
+    <ul class="plain">{% for i in result.issues %}<li><code>{{ i.field }}</code> — {{ i.message }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if result.autofixes %}
+  <div class="meta">Исправлено автоматически:</div>
+  <ul class="plain">{% for fix in result.autofixes %}<li>{{ fix }}</li>{% endfor %}</ul>
+  {% endif %}
+  <div class="meta">Модель {{ result.meta.model }} · попыток {{ result.meta.attempts }} ·
+    токены {{ result.meta.input_tokens }} / {{ result.meta.output_tokens }}{% if result.meta.fallback_used %} · сработал fallback{% endif %}</div>
+</section>
+
+<section>
+  <div class="row"><h2>SEO-заголовок <span class="meta">{{ result.stats.seo_title_chars }}/70</span></h2>
+    <button class="secondary" data-copy="title">Копировать</button></div>
+  <div id="title" class="copy-src">{{ card.seo_title }}</div>
+</section>
+
+<section>
+  <div class="row"><h2>SEO-описание <span class="meta">{{ result.stats.seo_description_chars }} симв., норма 800–1200</span></h2>
+    <button class="secondary" data-copy="description">Копировать</button></div>
+  <div id="description" class="copy-src">{{ card.seo_description }}</div>
+</section>
+
+<section>
+  <div class="row"><h2>Ключевые характеристики</h2><button class="secondary" data-copy="specs">Копировать</button></div>
+  <table id="specs">
+    <tr><th>Характеристика</th><th>Значение</th><th>Источник</th></tr>
+    {% for s in card.key_specs %}
+    <tr><td>{{ s.name }}</td>
+      <td>{% if s.source == "данных нет" %}<span class="nodata">данных нет</span>{% else %}{{ s.value }}{% endif %}</td>
+      <td class="meta">{% if s.source != "данных нет" %}{{ s.source }}{% endif %}</td></tr>
+    {% endfor %}
+  </table>
+</section>
+
+<section>
+  <div class="row"><h2>Поисковые запросы</h2><button class="secondary" data-copy="queries">Копировать</button></div>
+  <div id="queries" class="copy-src">{% for q in card.search_queries %}{{ q }}
+{% endfor %}</div>
+</section>
+
+<section>
+  <div class="row"><h2>Для менеджера</h2><button class="secondary" data-copy="commercial">Копировать</button></div>
+  <div id="commercial">
+    <strong>Кому подходит</strong>
+    <ul class="plain">{% for a in card.commercial.audience %}<li>{{ a }}</li>{% endfor %}</ul>
+    <strong>Какие задачи решает</strong>
+    <ul class="plain">{% for t in card.commercial.tasks %}<li>{{ t }}</li>{% endfor %}</ul>
+    <p><strong>Как представить клиенту:</strong> {{ card.commercial.pitch }}</p>
+  </div>
+</section>
+
+<section>
+  <h2>Чего не хватает в данных</h2>
+  {% if card.data_gaps %}
+  <table>
+    <tr><th>Поле</th><th>Статус</th><th>Что сделать</th></tr>
+    {% for g in card.data_gaps %}<tr><td>{{ g.field }}</td><td>{{ g.status }}</td><td>{{ g.comment }}</td></tr>{% endfor %}
+  </table>
+  {% else %}<p class="meta">Пробелов в данных не найдено.</p>{% endif %}
+</section>
+
+<section>
+  <div class="row"><h2>Markdown</h2><button class="secondary" data-copy="md">Копировать</button></div>
+  <textarea class="code" id="md" readonly>{{ markdown }}</textarea>
+</section>
+
+<section>
+  <div class="row"><h2>JSON</h2><button class="secondary" data-copy="json">Копировать</button></div>
+  <textarea class="code" id="json" readonly>{{ result_json }}</textarea>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+# Секреты
+.env
+
+# Окружение и кэш Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Результаты локальных прогонов (examples/output — примеры, они в репозитории) и большие исходные фиды
+/output/
+*.feed.xml
+feed.xml

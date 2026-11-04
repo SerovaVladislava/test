@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Карточки КИП{% endblock %}</title>
+  <style>
+    :root { --fg:#1d232b; --muted:#5f6b7a; --line:#d9dee5; --bg:#f6f7f9; --card:#fff;
+            --accent:#1f5fbf; --ok:#1f7a3f; --warn:#a15c00; --err:#b3261e; }
+    * { box-sizing: border-box; }
+    body { margin:0; font:15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+           color:var(--fg); background:var(--bg); }
+    main { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    h2 { font-size: 17px; margin: 0 0 10px; }
+    p.lead { color: var(--muted); margin: 0 0 20px; }
+    section { background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+              padding: 16px 18px; margin-bottom: 14px; }
+    label { display:block; font-weight:600; margin: 12px 0 4px; }
+    .hint { font-weight: 400; color: var(--muted); font-size: 13px; }
+    input[type=text], textarea { width:100%; padding:8px 10px; border:1px solid var(--line); border-radius:6px;
+                                 font: inherit; background:#fff; }
+    textarea { min-height: 90px; resize: vertical; }
+    textarea.code { font: 13px/1.45 ui-monospace, Consolas, monospace; min-height: 260px; }
+    button { font: inherit; border: 1px solid var(--accent); background: var(--accent); color:#fff;
+             padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    button.secondary { background:#fff; color: var(--accent); padding: 4px 10px; font-size: 13px; }
+    button:disabled { opacity: .6; cursor: progress; }
+    .tabs { display:flex; gap:6px; margin-bottom: 4px; }
+    .tabs label { margin:0; font-weight:500; border:1px solid var(--line); border-radius:6px; padding:4px 12px;
+                  cursor:pointer; background:#fff; }
+    .tabs input { display:none; }
+    .tabs input:checked + span { color: var(--accent); font-weight: 600; }
+    .errors { border-color: var(--err); color: var(--err); }
+    .errors ul { margin: 6px 0 0; padding-left: 20px; }
+    .status-ok { border-left: 4px solid var(--ok); }
+    .status-needs_review { border-left: 4px solid var(--warn); }
+    .row { display:flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .meta { color: var(--muted); font-size: 13px; }
+    table { width:100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align:left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { color: var(--muted); font-weight: 600; }
+    .nodata { color: var(--warn); font-weight: 600; }
+    .copy-src { white-space: pre-wrap; }
+    ul.plain { margin: 0; padding-left: 20px; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+<main>
+{% block content %}{% endblock %}
+</main>
+<script>
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-copy]");
+    if (!btn) return;
+    const el = document.getElementById(btn.dataset.copy);
+    const text = el.value !== undefined ? el.value : el.innerText;
+    try { await navigator.clipboard.writeText(text); btn.textContent = "Скопировано"; }
+    catch { btn.textContent = "Не удалось скопировать"; }
+    setTimeout(() => (btn.textContent = "Копировать"), 1500);
+  });
+</script>
+</body>
+</html>

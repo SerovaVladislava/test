@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yml_catalog date="2026-11-03T08:10:26+03:00">
+    <shop>
+        <name>Тестовый магазин</name>
+        <categories>
+            <category id="321">Оборудование для промышленной автоматизации</category>
+            <category id="339" parentId="321">Преобразователи (датчики) давления</category>
+            <category id="358">Теплотехнические приборы, газоанализаторы, счетчики</category>
+            <category id="369" parentId="358">Манометры показывающие</category>
+        </categories>
+        <offers>
+            <offer id="205847" available="true" group_id="8563">
+                <name>МП4-У 0...60 кгс/см² кл.т 1,5</name>
+                <typePrefix>манометр показывающий</typePrefix>
+                <url>https://www.souz-pribor.ru/product/mp4-u/</url>
+                <categoryId>369</categoryId>
+                <vendor>Манотомь</vendor>
+                <vendorCode/>
+                <price>2299</price>
+                <currencyId>RUR</currencyId>
+                <param name="Код товара">82766</param>
+            </offer>
+            <offer id="472022" available="true" group_id="12635">
+                <name>ПД100И-ДИ1,0-111-0,5-ЕХI (М23)</name>
+                <typePrefix>датчик давления взрывозащищенный, искробезопасный</typePrefix>
+                <url>https://www.souz-pribor.ru/product/pd100-di-div-dv-da-111-exia/</url>
+                <categoryId>339</categoryId>
+                <vendor>ОВЕН</vendor>
+                <vendorCode>161871</vendorCode>
+                <price>12200</price>
+                <currencyId>RUR</currencyId>
+                <param name="Артикул">161871</param>
+                <param name="Код товара">209449</param>
+            </offer>
+            <offer id="900001" available="true">
+                <name>Тестовый датчик</name>
+                <typePrefix>датчик давления</typePrefix>
+                <categoryId>339</categoryId>
+                <vendor>Тест</vendor>
+                <description><![CDATA[<p>Описание из фида.</p>]]></description>
+                <param name="Выходной сигнал">4...20 мА</param>
+                <param name="Диапазон" unit="МПа">0...1</param>
+            </offer>
+        </offers>
+    </shop>
+</yml_catalog>

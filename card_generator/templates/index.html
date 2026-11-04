@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Черновик карточки товара КИП</h1>
+<p class="lead">Введите данные о приборе — сервис подготовит SEO-заголовок, описание, характеристики, поисковые
+  запросы и справку для менеджера. Технические значения берутся только из введённых данных.</p>
+
+{% if errors %}
+<section class="errors">
+  <strong>Не удалось обработать данные:</strong>
+  <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+
+<form method="post" id="card-form">
+  <section>
+    <div class="tabs">
+      <label><input type="radio" name="mode" value="fields" {% if mode != "json" %}checked{% endif %}><span>Поля формы</span></label>
+      <label><input type="radio" name="mode" value="json" {% if mode == "json" %}checked{% endif %}><span>JSON</span></label>
+    </div>
+
+    <div id="mode-fields">
+      <label for="name">Название товара <span class="hint">обязательно</span></label>
+      <input type="text" id="name" name="name" value="{{ form.get('name', '') }}" placeholder="Манометр показывающий DM 02">
+
+      <label for="manufacturer">Производитель</label>
+      <input type="text" id="manufacturer" name="manufacturer" value="{{ form.get('manufacturer', '') }}" placeholder="Манотомь">
+
+      <label for="specs">Характеристики <span class="hint">по одной в строке: «название: значение»</span></label>
+      <textarea id="specs" name="specs" placeholder="диапазон измерений: 0–1,6 МПа&#10;класс точности: 1,5">{{ form.get('specs', '') }}</textarea>
+
+      <label for="description">Описание или фрагмент паспорта</label>
+      <textarea id="description" name="description">{{ form.get('description', '') }}</textarea>
+    </div>
+
+    <div id="mode-json" hidden>
+      <label for="json">Данные о товаре в JSON <span class="hint">поля name, manufacturer, specs, description</span></label>
+      <textarea class="code" id="json" name="json">{{ form.get('json') or sample_json }}</textarea>
+    </div>
+
+    <p><button type="submit" id="submit">Сгенерировать</button>
+      <span class="meta" id="wait" hidden>{{ wait_hint }}</span></p>
+  </section>
+</form>
+<p class="meta">API: <code>POST /api/generate</code> (JSON товара → JSON карточки), <code>POST /api/check</code> — проверка входа без LLM.</p>
+
+<script>
+  const fields = document.getElementById("mode-fields"), js = document.getElementById("mode-json");
+  function sync() {
+    const json = document.querySelector("input[name=mode]:checked").value === "json";
+    fields.hidden = json; js.hidden = !json;
+  }
+  document.querySelectorAll("input[name=mode]").forEach((r) => r.addEventListener("change", sync));
+  sync();
+  document.getElementById("card-form").addEventListener("submit", () => {
+    document.getElementById("submit").disabled = true;
+    document.getElementById("wait").hidden = false;
+  });
+</script>
+{% endblock %}
